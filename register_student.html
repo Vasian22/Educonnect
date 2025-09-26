@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ translations.register_student }} - {{ translations.title }}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gurmukhi:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      background: url('https://images.unsplash.com/photo-1581091012184-7f64cfb3f0d3?auto=format&fit=crop&w=1400&q=80') no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+    }
+    .overlay {
+      background-color: rgba(0,0,0,0.6);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+    .signup-card {
+      z-index: 1;
+      background-color: #fff;
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    }
+    .signup-card h1 {
+      color: #0d6efd;
+      margin-bottom: 1rem;
+    }
+    /* ✅ Flash message custom styles */
+    .alert {
+      border-radius: 0.75rem;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      margin-bottom: 20px;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+    .alert-success {
+      background-color: #d1e7dd;
+      color: #0f5132;
+      border-left: 6px solid #198754;
+    }
+    .alert-danger {
+      background-color: #f8d7da;
+      color: #842029;
+      border-left: 6px solid #dc3545;
+    }
+    .alert-warning {
+      background-color: #fff3cd;
+      color: #664d03;
+      border-left: 6px solid #ffc107;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">{{ translations.title }}</a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ translations.language }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="{{ url_for('set_language', lang='en') }}">English</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('set_language', lang='pa') }}">ਪੰਜਾਬੀ</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="overlay"></div>
+  <div class="container position-relative">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+
+        <!-- ✅ Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <!-- ✅ End flash messages -->
+
+        <div class="signup-card">
+          <h1 class="text-center">{{ translations.create_account }}</h1>
+          <p class="text-center text-muted mb-4">{{ translations.student_signup_desc }}</p>
+          <form action="{{ url_for('register_student')}}" method="post">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" name="name" id="name" placeholder="{{ translations.full_name }}" required />
+              <label for="name">{{ translations.full_name }}</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="number" class="form-control" name="class" id="class" placeholder="{{ translations.class }}" required />
+              <label for="class">{{ translations.class }}</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="tel" class="form-control" name="phone" id="phone" placeholder="{{ translations.parent_phone }}" required />
+              <label for="phone">{{ translations.parent_phone }}</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control" id="password" placeholder="{{ translations.create_password }}" name="password" required />
+              <label for="password">{{ translations.create_password }}</label>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 btn-lg">{{ translations.sign_up }}</button>
+            <hr class="my-4" />
+            <small class="text-muted">{{ translations.terms_agreement }}</small>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gurmukhi:wght@400;700&display=swap" rel="stylesheet">
+  <title>{{ translations.title }}</title>
+  <style>
+    /* Hero background */
+    .hero-section {
+      background: url("https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?auto=format&fit=crop&w=1600&q=80") no-repeat center center/cover;
+      height: 100vh;
+      position: relative;
+      color: white;
+    }
+
+    /* Overlay for readability */
+    .hero-section::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .feature-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.2);
+    }
+    #chat-icon {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      z-index: 1000;
+    }
+
+    #chat-box {
+      display: none;
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      width: 320px;
+      height: 450px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      overflow: hidden;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #chat-header {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    #chat-body {
+      padding: 10px;
+      height: 320px;
+      overflow-y: auto;
+      background-color: #f8f9fa;
+      color: #212529;
+    }
+
+    #chat-input {
+      display: flex;
+      padding: 8px;
+      gap: 6px;
+    }
+
+    #userInput {
+      flex-grow: 1;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      color: #000;
+    }
+
+    #mic-btn {
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      padding: 0 10px;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+
+<body style="font-family: 'Noto Sans Gurmukhi', sans-serif;">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">{{ translations.title }}</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item"><a class="nav-link active" href="#">{{ translations.home }}</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">{{ translations.features }}</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">{{ translations.contact }}</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">{{ translations.faqs }}</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">{{ translations.about }}</a></li>
+        </ul>
+        <div>
+         <!-- Homepage Buttons -->
+<div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+    <a href="{{url_for('register_student')}}" class="btn btn-primary btn-lg px-4 gap-3">{{ translations.student }}</a>
+    <a href="{{url_for('register_teacher')}}" class="btn btn-success btn-lg px-4 gap-3">{{ translations.admin }}</a>
+</div>
+
+<!-- Language Dropdown -->
+<div class="dropdown mt-2">
+    <button class="btn btn-outline-light dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        {{ translations.language }}
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+        <li><a class="dropdown-item" href="{{ url_for('set_language', lang='en') }}">English</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('set_language', lang='pa') }}">ਪੰਜਾਬੀ</a></li>
+    </ul>
+</div>
+
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section d-flex align-items-center text-center">
+    <div class="container hero-content">
+      <h1 class="display-3 fw-bold">{{ translations.welcome_title }}</h1>
+      <p class="lead mb-4">{{ translations.welcome_subtitle }}</p>
+      <div class="d-flex justify-content-center gap-3">
+        <a href="{{url_for('teacher_login')}}" class="btn btn-primary btn-lg">{{ translations.admin_panel }}</a>
+        <a href="{{url_for('student_login')}}" class="btn btn-success btn-lg">{{ translations.student_panel }}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="container my-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">{{ translations.key_features }}</h2>
+      <p class="text-muted">{{ translations.features_desc }}</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card feature-card h-100 text-center p-3">
+          <div class="card-body">
+            <h5 class="card-title">{{ translations.voice_chatbot }}</h5>
+            <p class="card-text">{{ translations.voice_desc }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card feature-card h-100 text-center p-3">
+          <div class="card-body">
+            <h5 class="card-title">{{ translations.materials }}</h5>
+            <p class="card-text">{{ translations.materials_desc }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card feature-card h-100 text-center p-3">
+          <div class="card-body">
+            <h5 class="card-title">{{ translations.quizzes }}</h5>
+            <p class="card-text">{{ translations.quizzes_desc }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <button id="chat-icon" onclick="toggleChat()">💬</button>
+
+  <div id="chat-box">
+    <div id="chat-header">{{ translations.chatbot_name }}</div>
+    <div id="chat-body">
+      <div><strong>{{ translations.chatbot_name }}:</strong> {{ translations.chat_greeting }}</div>
+    </div>
+    <div id="chat-input">
+      <input type="text" id="userInput" placeholder="{{ translations.chat_placeholder }}" onkeypress="handleKey(event)" />
+      <button id="mic-btn" onclick="startVoice()">🎤</button>
+    </div>
+  </div>
+
+  
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const chatBody = document.getElementById('chat-body');
+    const inputField = document.getElementById('userInput');
+
+    function toggleChat() {
+      chatBox.style.display = chatBox.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function handleKey(e) {
+      if (e.key === 'Enter') sendMessage();
+    }
+
+    function sendMessage() {
+      const userText = inputField.value.trim();
+      if (!userText) return;
+      appendMessage('You', userText);
+      inputField.value = '';
+
+      fetch('/chat', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({message: userText})
+      })
+      .then(res => res.json())
+      .then(data => {
+        appendMessage('Bot', data.response);
+        speakText(data.response);
+      })
+      .catch(err => {
+        appendMessage('Bot', 'Error fetching response.');
+      });
+    }
+
+    function appendMessage(sender, message) {
+      chatBody.innerHTML += `<div><strong>${sender}:</strong> ${message}</div>`;
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    function startVoice() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'en-IN';
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        inputField.value = transcript;
+        sendMessage();
+      };
+
+      recognition.onerror = function(event) {
+        alert("Voice recognition error: " + event.error);
+      };
+    }
+
+    function speakText(text) {
+      const msg = new SpeechSynthesisUtterance(text);
+      msg.lang = 'en-IN';
+      msg.rate = 1;
+      const voices = speechSynthesis.getVoices();
+      const indianVoice = voices.find(v => v.lang === 'en-IN') || voices[0];
+      msg.voice = indianVoice;
+      speechSynthesis.speak(msg);
+    }
+
+    window.speechSynthesis.onvoiceschanged = () => {};
+  </script>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-light py-4 mt-5 text-center">
+    <p class="mb-0">{{ translations.footer }}</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Career Guidance | EduConnect</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body{background:#eef6ff;font-family:Inter,Segoe UI,Arial;}
+    .career-card{padding:18px;border-radius:12px;background:#fff;box-shadow:0 8px 18px rgba(28,126,214,0.06)}
+    .skill-list li{list-style: none;padding:6px 0;border-bottom:1px dashed #eee}
+    .skill-list li:last-child{border-bottom:none}
+  </style>
+</head>
+<body class="p-4">
+  <div class="container">
+    <a href="{{ url_for('student_dashboard') }}" class="btn btn-link mb-3">&larr; Back</a>
+    <h2>🎓 Career Explorer</h2>
+    <p class="text-muted">Click a career to view required skills and simple next steps.</p>
+
+    <div class="row g-3">
+      <div class="col-md-4">
+        <div class="career-card">
+          <h5>Software Developer</h5>
+          <p class="small text-muted">Build apps and websites.</p>
+          <button class="btn btn-outline-primary btn-sm" onclick="showCareer('dev')">View</button>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="career-card">
+          <h5>Teacher</h5>
+          <p class="small text-muted">Teach and mentor students.</p>
+          <button class="btn btn-outline-primary btn-sm" onclick="showCareer('teacher')">View</button>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="career-card">
+          <h5>Electrician</h5>
+          <p class="small text-muted">Skilled trade with practical work.</p>
+          <button class="btn btn-outline-primary btn-sm" onclick="showCareer('electric')">View</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="detail" class="card mt-4 p-3 d-none">
+      <h5 id="careerTitle"></h5>
+      <ul id="skillList" class="skill-list"></ul>
+      <div class="mt-3">
+        <button class="btn btn-success" onclick="plan()">Mark as Interested</button>
+        <button class="btn btn-outline-secondary" onclick="closeDetail()">Close</button>
+      </div>
+      <div id="planMsg" class="mt-2 text-success d-none">Added to your interest list.</div>
+    </div>
+  </div>
+
+<script>
+  const CareerData = {
+    dev:{title:'Software Developer', skills:['Basic coding (Python/JS)','Problem solving','Build a small project','Learn Git and tools']},
+    teacher:{title:'Teacher', skills:['Good communication','Subject knowledge','Lesson planning','Patience and feedback']},
+    electric:{title:'Electrician', skills:['Hands-on wiring','Safety practices','Tool usage','Apprenticeship']}
+  };
+  function showCareer(k){
+    const d = CareerData[k];
+    document.getElementById('careerTitle').innerText = d.title;
+    const ul = document.getElementById('skillList'); ul.innerHTML='';
+    d.skills.forEach(s=>{ let li=document.createElement('li'); li.innerText = '• '+s; ul.appendChild(li); });
+    document.getElementById('detail').classList.remove('d-none');
+    document.getElementById('planMsg').classList.add('d-none');
+  }
+  function closeDetail(){ document.getElementById('detail').classList.add('d-none'); }
+  function plan(){ document.getElementById('planMsg').classList.remove('d-none'); }
+</script>
+</body>
+</html>
